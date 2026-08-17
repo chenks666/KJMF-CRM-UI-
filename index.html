@@ -210,9 +210,78 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
 .prompt-ops .btn{font-size:12px;padding:4px 12px}
 .rv-table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin:16px 20px;overflow:hidden;flex-shrink:0}
 .rv-table-head{padding:13px 18px;font-size:13.5px;font-weight:600;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+/* ---------- 移动端适配 ---------- */
+.mobile-top{display:none}
+.mobile-nav{display:none}
+@media (max-width:900px){
+  body{flex-direction:column}
+  .mobile-top{display:flex;align-items:center;height:48px;background:var(--nav-bg);color:#fff;padding:0 14px;gap:10px;flex-shrink:0;z-index:80}
+  .mobile-top .t{flex:1;font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mobile-top .burger{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:2px 6px}
+  .mobile-nav{position:fixed;top:48px;left:0;right:0;bottom:0;background:var(--nav-bg);z-index:79;overflow-y:auto;padding-bottom:20px}
+  .mobile-nav.show{display:block}
+  .mobile-nav .mg{padding:12px 20px 4px;font-size:11px;color:#5E6E8C}
+  .mobile-nav .mi{padding:12px 20px;color:#D7E0F0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+  .mobile-nav .mi.active{color:#fff;background:var(--brand)}
+  .sidebar{display:none}
+  .main{flex:1}
+  .topbar{height:44px;padding:0 10px;gap:8px}
+  .tabs-sub .tab-item{font-size:12px;padding:13px 4px}
+  .search{margin-left:4px;padding:5px 8px}
+  .top-right .engine-badge{display:none}
+  .left-col{display:none}
+  .toolbar{height:auto;padding:10px;flex-wrap:wrap;gap:8px}
+  .toolbar .btn{padding:6px 10px;font-size:12px}
+  .table-area{padding:10px}
+  .table-card{overflow-x:auto}
+  table{min-width:840px}
+  .score-panel{position:fixed;top:0;right:0;bottom:0;width:100%;max-width:100%;z-index:70}
+  .rv-body{grid-template-columns:1fr;padding:12px;gap:0}
+  .cust-card{margin:10px 12px 0;padding:12px;flex-wrap:wrap}
+  .cust-right{margin-left:0;flex-direction:row;gap:10px;align-items:center}
+  .rv-head{padding:10px 12px;gap:8px}
+  .rv-title{font-size:13px}
+  .rv-actions{flex-wrap:wrap}
+  .rv-table-wrap{margin:10px 12px;overflow-x:auto}
+  .rv-table-wrap table{min-width:760px}
+  .ai-panel{right:8px;bottom:76px;width:calc(100vw - 16px);max-width:420px;height:60vh}
+  .ai-fab{right:14px;bottom:14px;width:48px;height:48px}
+}
 </style>
 </head>
 <body>
+
+<!-- 移动端顶部栏 -->
+<div class="mobile-top">
+  <div class="logo-mark" style="width:24px;height:24px;font-size:11px">魔</div>
+  <div class="t">跨境魔方 · 我的客户</div>
+  <button class="burger" onclick="toggleMobileNav()">☰</button>
+</div>
+<!-- 移动端导航浮层 -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mi" onclick="closeMobileNav()">工作台</div>
+  <div class="mi" onclick="closeMobileNav()">AI外贸员</div>
+  <div class="mg">线索中心</div>
+  <div class="mi" onclick="closeMobileNav()">海关数据</div>
+  <div class="mi" onclick="closeMobileNav()">地图获客</div>
+  <div class="mi" onclick="closeMobileNav()">领英获客</div>
+  <div class="mi" onclick="closeMobileNav()">Facebook获客</div>
+  <div class="mi" onclick="closeMobileNav()">WhatsApp获客</div>
+  <div class="mi" onclick="closeMobileNav()">广交会采购商</div>
+  <div class="mi" onclick="closeMobileNav()">全球企业库</div>
+  <div class="mg">转化工具</div>
+  <div class="mi" onclick="closeMobileNav()">邮寄宣传册</div>
+  <div class="mi" onclick="closeMobileNav()">WhatsApp营销中心</div>
+  <div class="mi" onclick="closeMobileNav()">邮件营销</div>
+  <div class="mi" onclick="closeMobileNav()">短信中心</div>
+  <div class="mg">CRM客户管理</div>
+  <div class="mi active" onclick="closeMobileNav()">我的客户</div>
+  <div class="mi" onclick="closeMobileNav()">客户设置</div>
+  <div class="mg">管理中心</div>
+  <div class="mi" onclick="closeMobileNav()">搜索记录</div>
+  <div class="mi" onclick="closeMobileNav()">数据看板</div>
+  <div class="mi" onclick="closeMobileNav()">个人中心</div>
+</div>
 
 <aside class="sidebar">
   <div class="logo"><div class="logo-mark">魔</div><div class="logo-name">跨境魔方</div></div>
@@ -415,14 +484,14 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
         <div class="rv-card">
           <h3>时区与节假日适配</h3>
           <div class="field">
-            <div class="fl">客户所在地（自动识别）</div>
-            <div class="tz-row"><span class="k">时区</span><span class="v">美国东部 (EDT, UTC-4)</span></div>
-            <div class="tz-row"><span class="k">当地推送</span><span class="v">工作日 09:00 – 11:00</span></div>
-            <div class="tz-row"><span class="k">你的时间</span><span class="v">北京时间 21:00 – 23:00</span><span style="font-size:11px;color:var(--text-3)">（已换算 · 夏令时）</span></div>
+            <div class="fl">客户所在地（按国家自动识别）</div>
+            <div class="tz-row"><span class="k">时区</span><span class="v" id="tzZone">—</span></div>
+            <div class="tz-row"><span class="k">当地推送</span><span class="v" id="tzLocal">—</span></div>
+            <div class="tz-row"><span class="k">你的时间</span><span class="v" id="tzBeijing">—</span><span style="font-size:11px;color:var(--text-3)">（实时换算 · 随夏令时变化）</span></div>
           </div>
           <div class="field">
             <div class="fl">未来将自动避开的当地节假日（Nager.Date 数据源）</div>
-            <div><span class="holiday-tag">9/7 美国劳动节</span><span class="holiday-tag">10/12 哥伦布日</span><span class="holiday-tag">11/26-27 感恩节</span><span class="holiday-tag">12/25 圣诞节</span></div>
+            <div id="holidayList"></div>
           </div>
           <div class="switch on" onclick="this.classList.toggle('on')"><span class="tr"></span>自动避开当地节假日</div>
         </div>
@@ -672,6 +741,43 @@ function aiAsk(q){
 }
 
 /* ---- 智能跟进提醒系统 ---- */
+const TZ_MAP={美国:'America/New_York',瑞典:'Europe/Stockholm',中国台湾:'Asia/Taipei',德国:'Europe/Berlin',英国:'Europe/London',巴西:'America/Sao_Paulo',日本:'Asia/Tokyo'};
+const HOLIDAYS_MAP={
+  美国:['9/7 美国劳动节','10/12 哥伦布日','11/26-27 感恩节','12/25 圣诞节'],
+  瑞典:['6/19 仲夏夜前夜','12/13 圣露西亚节','12/25-26 圣诞节'],
+  中国台湾:['9/25 中秋节','10/10 双十节','12/31 跨年'],
+  德国:['10/3 德国统一日','12/25-26 圣诞节','1/1 元旦'],
+  英国:['8/31 夏季银行假日','12/25-26 圣诞节','12/28 节礼日补假'],
+  巴西:['9/7 独立日','10/12 儿童节','11/20 黑人意识日','12/25 圣诞节'],
+  日本:['9/21 敬老日','10/12 体育之日','11/23 劳动感谢日']
+};
+function tzOffsetH(tz,date){
+  const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'shortOffset'}).formatToParts(date);
+  const off=p.find(x=>x.type==='timeZoneName').value;
+  const m=off.match(/GMT([+-])(\d+)(?::(\d+))?/);
+  if(!m)return 0;
+  return (m[1]==='-'?-1:1)*(parseInt(m[2])+(m[3]?parseInt(m[3])/60:0));
+}
+function tzNameShort(tz){
+  return new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'short'}).formatToParts(new Date()).find(x=>x.type==='timeZoneName').value;
+}
+function custHourToBeijing(hour){
+  const now=new Date();
+  let bj=hour-tzOffsetH(TZ_MAP[curCust.country],now)+tzOffsetH('Asia/Shanghai',now);
+  bj=((bj%24)+24)%24;
+  const hh=Math.floor(bj),mm=Math.round((bj-hh)*60);
+  return hh+':'+(mm<10?'0':'')+mm;
+}
+function updateReminderTZ(){
+  const tz=TZ_MAP[curCust.country]||'America/New_York';
+  const hols=HOLIDAYS_MAP[curCust.country]||HOLIDAYS_MAP['美国'];
+  const off=tzOffsetH(tz,new Date());
+  const sign=off>=0?'+':'';
+  document.getElementById('tzZone').textContent=curCust.country+' · '+tzNameShort(tz)+' (UTC'+sign+off+')';
+  document.getElementById('tzLocal').textContent='工作日 09:00 – 11:00（客户当地）';
+  document.getElementById('tzBeijing').textContent='北京时间 '+custHourToBeijing(9)+' – '+custHourToBeijing(11);
+  document.getElementById('holidayList').innerHTML=hols.map(h=>`<span class="holiday-tag">${h}</span>`).join('');
+}
 let curCust={name:"Ashley Furniture Trading",country:"美国",industry:"家具",recent:"2 个月前",cycle:"每季度稳定"};
 let remPlans=[];
 function openReminder(name,country,industry,recent,cycle,flagc,flagt){
@@ -680,6 +786,7 @@ function openReminder(name,country,industry,recent,cycle,flagc,flagt){
   document.getElementById("rc-meta").textContent=country+" · "+industry+" · 最近采购 "+recent+" · "+cycle;
   const f=document.getElementById("rc-flag");
   f.style.background=flagc||"#3C5DA8";f.textContent=flagt||"US";
+  updateReminderTZ();
   document.querySelector(".work").style.display="none";
   document.getElementById("rvReminder").classList.add("show");
   renderPlans();
@@ -691,13 +798,14 @@ function closeReminder(){
 function saveReminder(){
   const auto=document.getElementById("cycTabs").querySelector("button.on").dataset.m==="auto";
   const cycle=auto?"自动（季度窗口）":"手动固定";
-  const next=auto?"08-28 21:00 北京时间":"08-24 21:00 北京时间";
-  remPlans.push({name:curCust.name,next,local:"09:00 客户当地",cycle,ch:"企业微信 · WhatsApp",st:"已启用"});
+  const bj=custHourToBeijing(9);
+  remPlans.push({name:curCust.name,next:"08-28 "+bj+" 北京时间",local:"09:00 客户当地",cycle,ch:"企业微信 · WhatsApp",st:"已启用"});
   renderPlans();
   toast("跟进提醒已保存并启用（T+1 生效）");
 }
 function renderPlans(){
-  const rows=remPlans.length?remPlans:[{name:curCust.name,next:"08-28 21:00 北京时间",local:"09:00 客户当地",cycle:"自动（季度窗口）",ch:"企业微信 · WhatsApp",st:"已启用"}];
+  const bj=custHourToBeijing(9);
+  const rows=remPlans.length?remPlans:[{name:curCust.name,next:"08-28 "+bj+" 北京时间",local:"09:00 客户当地",cycle:"自动（季度窗口）",ch:"企业微信 · WhatsApp",st:"已启用"}];
   document.getElementById("remTbody").innerHTML=rows.map((r,i)=>`<tr>
     <td style="font-weight:600">${r.name}</td><td>${r.next}</td><td style="color:var(--text-3)">${r.local}</td>
     <td>${r.cycle}</td><td>${r.ch}</td>
@@ -713,6 +821,10 @@ document.querySelectorAll("#cycTabs button").forEach(b=>{
     document.getElementById("manualBox").classList.toggle("show",m==="manual");
   });
 });
+
+/* ---- 移动端 ---- */
+function toggleMobileNav(){document.getElementById("mobileNav").classList.toggle("show")}
+function closeMobileNav(){document.getElementById("mobileNav").classList.remove("show");toast("演示环境：仅展示导航布局")}
 
 updateSliderUI();renderTable();
 </script>
