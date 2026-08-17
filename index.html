@@ -147,6 +147,69 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
 .ai-list b{color:var(--brand)}
 .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#1F2937;color:#fff;padding:9px 18px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .25s;z-index:100;pointer-events:none}
 .toast.show{opacity:1}
+.rv{display:none;flex-direction:column;height:100%;overflow:hidden}
+.rv.show{display:flex}
+.rv-head{background:var(--panel);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.rv-back{display:flex;align-items:center;gap:5px;color:var(--text-2);cursor:pointer;font-size:12.5px;background:none;border:1px solid var(--border);border-radius:8px;padding:5px 11px;font-family:var(--font)}
+.rv-back:hover{color:var(--brand);border-color:var(--brand)}
+.rv-title{font-size:15px;font-weight:600}
+.cust-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 20px;margin:16px 20px 0;display:flex;align-items:center;gap:14px;flex-shrink:0}
+.cust-flag{width:34px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0}
+.cust-name{font-size:15px;font-weight:600}
+.cust-meta{font-size:11.5px;color:var(--text-3);margin-top:3px}
+.cust-right{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.rv-body{padding:16px 20px;overflow-y:auto;display:grid;grid-template-columns:1.35fr .85fr;gap:16px;align-items:start}
+.rv-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.rv-card h3{font-size:13.5px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.rv-card h3::before{content:"";width:4px;height:14px;background:var(--brand);border-radius:2px}
+.mode-tabs{display:flex;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:12px}
+.mode-tabs button{flex:1;border:none;background:transparent;padding:6px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--text-3);font-family:var(--font)}
+.mode-tabs button.on{background:#fff;color:var(--brand);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.auto-box{background:var(--brand-soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:none}
+.auto-box.show{display:block}
+.auto-box .lbl{font-size:11px;color:var(--text-2);margin-bottom:6px}
+.window-badge{display:inline-block;background:var(--brand);color:#fff;font-size:12px;font-weight:600;padding:4px 12px;border-radius:16px;margin-bottom:8px}
+.auto-hint{font-size:12px;color:var(--text-2);line-height:1.7}
+.auto-hint b{color:var(--brand-deep)}
+.manual-box{display:none}
+.manual-box.show{display:block}
+.manual-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.manual-row select,.manual-row input{border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-size:12.5px;font-family:var(--font);outline:none}
+.manual-row input:focus,.manual-row select:focus{border-color:var(--brand)}
+.field{margin-bottom:12px}
+.field .fl{font-size:11.5px;color:var(--text-2);margin-bottom:6px}
+.tz-row{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:7px 10px;background:var(--bg);border-radius:8px;margin-bottom:6px}
+.tz-row .k{color:var(--text-3);font-size:11.5px;width:64px;flex-shrink:0}
+.tz-row .v{font-weight:500}
+.holiday-tag{display:inline-flex;align-items:center;gap:4px;background:var(--b-soft);color:#C47A00;font-size:11px;padding:2px 9px;border-radius:12px;margin:3px 4px 3px 0}
+.switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:12.5px;user-select:none}
+.switch .tr{width:34px;height:18px;border-radius:10px;background:var(--border);position:relative;transition:background .2s}
+.switch .tr::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .2s}
+.switch.on .tr{background:var(--brand)}
+.switch.on .tr::after{left:18px}
+.ch-list{display:flex;flex-direction:column;gap:7px}
+.ch-row{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:9px;padding:8px 11px;cursor:pointer;font-size:12.5px;transition:all .15s}
+.ch-row:hover{border-color:var(--brand)}
+.ch-row.on{border-color:var(--brand);background:var(--brand-soft)}
+.ch-row .pri{font-size:10px;color:var(--text-3);border:1px solid var(--border);border-radius:10px;padding:1px 7px;margin-left:auto;flex-shrink:0}
+.ch-row.on .pri{color:var(--brand-deep);border-color:var(--brand);background:#fff}
+.ai-content{background:linear-gradient(135deg,#FFF7F0,#FFEFE6);border:1px solid #FADDC8;border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.75;color:#7C4A1E}
+.ai-content b{color:#D2691E}
+.rv-actions{display:flex;gap:10px;margin-top:14px}
+.rv-actions .btn{padding:8px 18px;font-size:13px}
+.ai-sug{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.ai-sug .pt{font-size:12px;font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.ai-sug .pt::before{content:"✦";color:#F97316}
+.ai-sug p{font-size:12.5px;line-height:1.75;color:var(--text-2)}
+.ai-sug .tier{font-size:11.5px;color:var(--text-3);margin-top:8px}
+.ai-prompt-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:16px}
+.ai-prompt-card .pt{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.ai-prompt-card .pt .badge{font-size:10px;background:var(--brand-soft);color:var(--brand-deep);padding:1px 8px;border-radius:10px;font-weight:500}
+.prompt-box{background:#F7F8FA;border:1px solid var(--border);border-radius:9px;padding:11px 13px;font-size:12px;line-height:1.7;color:var(--text-2);margin-bottom:9px;font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+.prompt-ops{display:flex;gap:8px}
+.prompt-ops .btn{font-size:12px;padding:4px 12px}
+.rv-table-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin:16px 20px;overflow:hidden;flex-shrink:0}
+.rv-table-head{padding:13px 18px;font-size:13.5px;font-weight:600;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 </style>
 </head>
 <body>
@@ -306,6 +369,125 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
       </div>
     </aside>
   </div>
+
+  <!-- ===== 视图二：智能跟进提醒系统（点击"跟进"跳转） ===== -->
+  <div class="rv" id="rvReminder">
+    <div class="rv-head">
+      <button class="rv-back" onclick="closeReminder()">← 返回公司列表</button>
+      <div class="rv-title">智能跟进提醒系统</div>
+      <span class="engine-badge">周期引擎 · 时区适配 · 多通道</span>
+    </div>
+
+    <div class="cust-card">
+      <span class="cust-flag" id="rc-flag">US</span>
+      <div>
+        <div class="cust-name" id="rc-name">Ashley Furniture Trading</div>
+        <div class="cust-meta" id="rc-meta">美国 · 家具 · 最近采购 2 个月前 · 每季度稳定</div>
+      </div>
+      <div class="cust-right">
+        <span class="pill a">A 高潜</span>
+        <span style="font-size:11.5px;color:var(--text-2)">综合评分 28.5 / 30</span>
+      </div>
+    </div>
+
+    <div class="rv-body">
+      <!-- 左栏：配置 -->
+      <div>
+        <div class="rv-card">
+          <h3>跟进周期</h3>
+          <div class="mode-tabs" id="cycTabs">
+            <button class="on" data-m="auto">自动推算（推荐）</button>
+            <button data-m="manual">手动固定周期</button>
+          </div>
+          <div class="auto-box show" id="autoBox">
+            <div class="lbl">基于历史采购频率 · 该客户每季度首月采购</div>
+            <div class="window-badge">预计下次采购窗口：9 月第 1 周</div>
+            <div class="auto-hint">建议提醒节奏：<b>8 月 28 日</b>（窗口前触达）→ <b>9 月 18 日</b>（窗口内跟进）→ <b>10 月 2 日</b>（未成交则复盘）</div>
+          </div>
+          <div class="manual-box" id="manualBox">
+            <div class="manual-row">每 <input type="number" value="7" min="1" style="width:52px"> 天提醒一次（不推荐 &lt;3 天）</div>
+            <div class="manual-row">
+              <select><option>固定每周一</option><option>固定每月 1 日</option><option>按客户时区周一</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="rv-card">
+          <h3>时区与节假日适配</h3>
+          <div class="field">
+            <div class="fl">客户所在地（自动识别）</div>
+            <div class="tz-row"><span class="k">时区</span><span class="v">美国东部 (EDT, UTC-4)</span></div>
+            <div class="tz-row"><span class="k">当地推送</span><span class="v">工作日 09:00 – 11:00</span></div>
+            <div class="tz-row"><span class="k">你的时间</span><span class="v">北京时间 21:00 – 23:00</span><span style="font-size:11px;color:var(--text-3)">（已换算 · 夏令时）</span></div>
+          </div>
+          <div class="field">
+            <div class="fl">未来将自动避开的当地节假日（Nager.Date 数据源）</div>
+            <div><span class="holiday-tag">9/7 美国劳动节</span><span class="holiday-tag">10/12 哥伦布日</span><span class="holiday-tag">11/26-27 感恩节</span><span class="holiday-tag">12/25 圣诞节</span></div>
+          </div>
+          <div class="switch on" onclick="this.classList.toggle('on')"><span class="tr"></span>自动避开当地节假日</div>
+        </div>
+
+        <div class="rv-card">
+          <h3>推送通道</h3>
+          <div class="ch-list">
+            <div class="ch-row on" onclick="this.classList.toggle('on')"><span>💬 企业微信 / 钉钉 / 飞书机器人</span><span class="pri">首选 · 触达率最高</span></div>
+            <div class="ch-row on" onclick="this.classList.toggle('on')"><span>🟢 WhatsApp Business API</span><span class="pri">次选 · 客户已在 WhatsApp 沟通</span></div>
+            <div class="ch-row on" onclick="this.classList.toggle('on')"><span>📧 站内信 / 邮件</span><span class="pri">兜底 · 成本低</span></div>
+            <div class="ch-row" onclick="this.classList.toggle('on')"><span>📱 短信</span><span class="pri">兜底</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:9px">按 首选 → 次选 → 兜底 顺序推送，失败自动降级；同一提醒每通道仅 1 次。</div>
+        </div>
+
+        <div class="rv-card">
+          <h3>提醒内容（AI 动态生成）</h3>
+          <div class="ai-content" id="aiContent">
+            该客户<b>上次邮件未回复</b>，建议切换至 <b>WhatsApp</b> 触达；其竞品 <b>Williams Sonoma</b> 近期增加采购量，可在沟通中提及"近期行业需求上升"作为切入点。推荐话术：<i>“Hi Ashley, we noticed market demand is picking up recently — shall we schedule a quick call this week?”</i>
+          </div>
+          <button class="btn regenerate" onclick="toast('已按最新海关动态重新生成提醒内容')">⟳ 重新生成</button>
+        </div>
+
+        <div class="rv-actions">
+          <button class="btn primary" onclick="saveReminder()">保存并启用提醒</button>
+          <button class="btn" onclick="toast('已生成提醒预览（模拟）')">预览推送效果</button>
+        </div>
+      </div>
+
+      <!-- 右栏：AI 建议 + Prompt 教学 -->
+      <div>
+        <div class="ai-sug">
+          <div class="pt">AI 业务员策略建议</div>
+          <p>该客户进入采购窗口前 7 天是最佳触达时机。建议在 <b>8 月 28 日 09:00（客户当地）</b>推送第一轮提醒；若窗口内无回复，自动升级为 WhatsApp 双通道。竞品动态已纳入话术库。</p>
+          <div class="tier">基于：采购频率 5/5 · 时间信号 5/5 · 竞品监控已开启</div>
+        </div>
+
+        <div class="ai-prompt-card">
+          <div class="pt">Prompt 模板 <span class="badge">基础 · 教学页</span></div>
+          <div class="prompt-box">帮我在 CRM 内的客户中设置每 X 天提醒我需要跟进的消息，时间为不同客户所在地为准，提醒的日期需要避开客户对应的国家节假日，不要联系时间错位导致触达失效。</div>
+          <div class="prompt-ops">
+            <button class="btn" onclick="toast('基础 Prompt 已复制')">复制</button>
+            <button class="btn" onclick="toast('已带入 AI 业务员对话框')">在 AI 业务员中使用</button>
+          </div>
+        </div>
+
+        <div class="ai-prompt-card">
+          <div class="pt">Prompt 模板 <span class="badge" style="background:#FFF3DC;color:#C47A00">进阶 · 策略</span></div>
+          <div class="prompt-box">帮我分析 CRM 内标记为 A 级的客户，哪些在最近 X 天内没有互动记录，并生成一份包含跟进建议、推荐话术、最佳触达时间的提醒清单。</div>
+          <div class="prompt-ops">
+            <button class="btn" onclick="toast('进阶 Prompt 已复制')">复制</button>
+            <button class="btn" onclick="toast('已带入 AI 业务员对话框')">在 AI 业务员中使用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rv-table-wrap">
+      <div class="rv-table-head">跟进提醒计划 <span style="font-size:11.5px;color:var(--text-3);font-weight:400">T+1 周期引擎 · 已避开节假日</span></div>
+      <table>
+        <thead><tr><th>客户</th><th>下次提醒（你的时间）</th><th>当地时间</th><th>周期</th><th>通道</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody id="remTbody"></tbody>
+      </table>
+    </div>
+  </div>
 </main>
 
 <button class="ai-fab" onclick="toggleAI()"><span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="5"/><rect x="4.5" y="5.5" width="15" height="11.5" rx="4"/><circle cx="9" cy="10.5" r="1.5" fill="#fff" stroke="none"/><circle cx="15" cy="10.5" r="1.5" fill="#fff" stroke="none"/><path d="M8.5 14.5h7"/><rect x="2.2" y="8.5" width="2.2" height="4.5" rx="1"/><rect x="19.6" y="8.5" width="2.2" height="4.5" rx="1"/></svg></span>AI业务员</button>
@@ -428,7 +610,7 @@ function renderTable(){
           <td>${c.supplier}<div class="basis-wrap" id="b-${id}">${basisText(c)}</div></td>
           <td><span class="pill ${c.lv.k}">${c.lv.t}</span></td>
           <td class="score-cell"><span class="score-num">${c.s.toFixed(1)}</span><span style="font-size:11px;color:var(--text-3)">/30</span></td>
-          <td><button class="link" onclick="document.getElementById('b-${id}').classList.toggle('show')">评分依据</button> <button class="link" onclick="toast('已发起跟进：'+'${c.name}')">跟进</button></td>
+          <td><button class="link" onclick="document.getElementById('b-${id}').classList.toggle('show')">评分依据</button> <button class="link" onclick="openReminder('${c.name}','${c.country}','${c.industry}','${c.recent}','${c.cycle}','${FLAG[c.flag]||'#5A6BB5'}','${FLAG_TEXT[c.flag]||c.flag}')">跟进</button></td>
         </tr>`;
   }).join("");
 }
@@ -488,6 +670,49 @@ function aiAsk(q){
   }
   document.getElementById("aiInput").value="";
 }
+
+/* ---- 智能跟进提醒系统 ---- */
+let curCust={name:"Ashley Furniture Trading",country:"美国",industry:"家具",recent:"2 个月前",cycle:"每季度稳定"};
+let remPlans=[];
+function openReminder(name,country,industry,recent,cycle,flagc,flagt){
+  curCust={name,country,industry,recent,cycle};
+  document.getElementById("rc-name").textContent=name;
+  document.getElementById("rc-meta").textContent=country+" · "+industry+" · 最近采购 "+recent+" · "+cycle;
+  const f=document.getElementById("rc-flag");
+  f.style.background=flagc||"#3C5DA8";f.textContent=flagt||"US";
+  document.querySelector(".work").style.display="none";
+  document.getElementById("rvReminder").classList.add("show");
+  renderPlans();
+}
+function closeReminder(){
+  document.getElementById("rvReminder").classList.remove("show");
+  document.querySelector(".work").style.display="flex";
+}
+function saveReminder(){
+  const auto=document.getElementById("cycTabs").querySelector("button.on").dataset.m==="auto";
+  const cycle=auto?"自动（季度窗口）":"手动固定";
+  const next=auto?"08-28 21:00 北京时间":"08-24 21:00 北京时间";
+  remPlans.push({name:curCust.name,next,local:"09:00 客户当地",cycle,ch:"企业微信 · WhatsApp",st:"已启用"});
+  renderPlans();
+  toast("跟进提醒已保存并启用（T+1 生效）");
+}
+function renderPlans(){
+  const rows=remPlans.length?remPlans:[{name:curCust.name,next:"08-28 21:00 北京时间",local:"09:00 客户当地",cycle:"自动（季度窗口）",ch:"企业微信 · WhatsApp",st:"已启用"}];
+  document.getElementById("remTbody").innerHTML=rows.map((r,i)=>`<tr>
+    <td style="font-weight:600">${r.name}</td><td>${r.next}</td><td style="color:var(--text-3)">${r.local}</td>
+    <td>${r.cycle}</td><td>${r.ch}</td>
+    <td><span class="pill ${i===0?'a':'b'}">${r.st}</span></td>
+    <td><button class="link" onclick="toast('已暂停该客户提醒（${r.name}）')">暂停</button> <button class="link" onclick="toast('立即发送提醒（模拟）')">立即提醒</button></td>
+  </tr>`).join("");
+}
+document.querySelectorAll("#cycTabs button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#cycTabs button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+    const m=b.dataset.m;
+    document.getElementById("autoBox").classList.toggle("show",m==="auto");
+    document.getElementById("manualBox").classList.toggle("show",m==="manual");
+  });
+});
 
 updateSliderUI();renderTable();
 </script>
