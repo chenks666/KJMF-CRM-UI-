@@ -123,11 +123,12 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
 .quick-ops .btn{justify-content:center}
 .drawer-foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);line-height:1.6}
 /* AI */
-.ai-fab{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2B6AF0,#7A5AF8);color:#fff;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 20px rgba(43,106,240,.35);font-size:10px;z-index:50}
-.ai-fab .ic{font-size:18px;line-height:1}
+.ai-fab{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FFA040,#F97316);color:#fff;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 20px rgba(249,115,22,.4);font-size:10px;z-index:50;transition:transform .15s}
+.ai-fab:hover{transform:scale(1.06)}
+.ai-fab .ic{line-height:1;display:flex}
 .ai-panel{position:fixed;right:22px;bottom:86px;width:360px;height:460px;background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(15,23,42,.18);display:none;flex-direction:column;z-index:60;overflow:hidden}
 .ai-panel.show{display:flex}
-.ai-head{background:linear-gradient(135deg,#2B6AF0,#7A5AF8);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:9px}
+.ai-head{background:linear-gradient(135deg,#FFA040,#F97316);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:9px}
 .ai-head .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px}
 .ai-head h3{font-size:13.5px;font-weight:600}
 .ai-head p{font-size:10.5px;opacity:.85}
@@ -307,10 +308,10 @@ input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer
   </div>
 </main>
 
-<button class="ai-fab" onclick="toggleAI()"><span class="ic">✦</span>AI业务员</button>
+<button class="ai-fab" onclick="toggleAI()"><span class="ic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="5"/><rect x="4.5" y="5.5" width="15" height="11.5" rx="4"/><circle cx="9" cy="10.5" r="1.5" fill="#fff" stroke="none"/><circle cx="15" cy="10.5" r="1.5" fill="#fff" stroke="none"/><path d="M8.5 14.5h7"/><rect x="2.2" y="8.5" width="2.2" height="4.5" rx="1"/><rect x="19.6" y="8.5" width="2.2" height="4.5" rx="1"/></svg></span>AI业务员</button>
 
 <div class="ai-panel" id="aiPanel">
-  <div class="ai-head"><div class="ic">✦</div><div><h3>AI 业务员</h3><p>评分由规则引擎计算 · AI 仅辅助</p></div></div>
+  <div class="ai-head"><div class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="5"/><rect x="4.5" y="5.5" width="15" height="11.5" rx="4"/><circle cx="9" cy="10.5" r="1.5" fill="#fff" stroke="none"/><circle cx="15" cy="10.5" r="1.5" fill="#fff" stroke="none"/><path d="M8.5 14.5h7"/><rect x="2.2" y="8.5" width="2.2" height="4.5" rx="1"/><rect x="19.6" y="8.5" width="2.2" height="4.5" rx="1"/></svg></div><div><h3>AI 业务员</h3><p>评分由规则引擎计算 · AI 仅辅助</p></div></div>
   <div class="ai-body" id="aiBody">
     <div class="msg ai">您好，我是 AI 业务员。可以查 Top 客户、解释评分、生成话术。<div class="ref">示例：<b>"本月最值得跟进的5个客户"</b></div></div>
   </div>
@@ -359,39 +360,60 @@ function basisText(c){
   return "时间："+t+" · 频率："+f+" · "+s+" · 体量"+c.scores.size+" · 产品匹配"+c.scores.product+a;
 }
 
-/* ---- 联动权重：拖一项，其他按比例自动调，总和恒等于 100 ---- */
+/* ---- 联动权重：取消/勾选按 DEFAULT 比例映射/恢复，拖动只在 enabled 内联动 ---- */
 const DEFAULT=[40,25,20,10];
 let pct=[...DEFAULT];
+let enabled=[true,true,true,true];
 let mode="smart";
 
+function mapFromDefault(){
+  const en=enabled.map((e,i)=>e?i:-1).filter(i=>i>=0);
+  let tmp;
+  if(en.length===4){
+    tmp=[...DEFAULT];
+  } else {
+    const selSum=en.reduce((a,i)=>a+DEFAULT[i],0)||1;
+    tmp=DEFAULT.map((v,i)=>enabled[i]?Math.round(v/selSum*100):0);
+  }
+  pct=tmp.map((v,i)=>enabled[i]?v:0);
+  const diff=100-pct.reduce((a,b)=>a+b,0);
+  if(en.length>0)pct[en[0]]+=diff;
+  enabled.forEach((e,i)=>{if(!e)pct[i]=0});
+  updateSliderUI();
+  renderTable();
+}
 function rebalance(idx,newVal){
   newVal=Math.max(0,Math.min(100,newVal));
-  const others=[];for(let i=0;i<4;i++)if(i!==idx)others.push({i,v:pct[i]});
-  const sumOthers=others.reduce((a,b)=>a+b.v,0);
+  if(!enabled[idx])return;
+  const sel=enabled.map((e,i)=>e?i:-1).filter(i=>i>=0);
+  const others=sel.filter(i=>i!==idx);
+  const sumOthers=others.reduce((a,i)=>a+pct[i],0);
   const remain=100-newVal;
-  let next=[...pct];
-  next[idx]=newVal;
-  if(sumOthers===0){
-    const each=Math/3;
-    others.forEach(o=>next[o.i]=Math.round(each));
+  if(sumOthers>0){
+    others.forEach(i=>{pct[i]=Math.round(pct[i]/sumOthers*remain)});
   } else {
-    others.forEach(o=>{next[o.i]=Math.round(o.v/sumOthers*remain);});
+    others.forEach(i=>pct[i]=0);
   }
-  // 修正四舍五入误差：把差额补给 idx 自身
-  const diff=100-next.reduce((a,b)=>a+b,0);
-  next[idx]+=diff;
-  next[idx]=Math.max(0,Math.min(100,next[idx]));
-  pct=next;
+  pct[idx]=newVal;
+  const diff=100-pct.reduce((a,b)=>a+b,0);
+  pct[idx]+=diff;
+  pct[idx]=Math.max(0,Math.min(100,pct[idx]));
+  enabled.forEach((e,i)=>{if(!e)pct[i]=0});
   updateSliderUI();
   if(mode==="custom"){
-    const dev=pct.some((v,i)=>Math.abs(v-DEFAULT[i])>3);
+    const dev=pct.some((v,i)=>enabled[i]&&Math.abs(v-DEFAULT[i])>3);
     document.getElementById("weightTip").classList.toggle("show",dev);
   }
   renderTable();
 }
 function updateSliderUI(){
-  document.querySelectorAll(".wslider").forEach((s,i)=>{s.value=pct[i]});
-  ["time","freq","supplier","size"].forEach((k,i)=>{document.getElementById("wt-"+k).textContent=pct[i]+"%";});
+  document.querySelectorAll(".wslider").forEach((s,i)=>{
+    s.value=enabled[i]?pct[i]:0;
+    s.disabled=!enabled[i];
+  });
+  ["time","freq","supplier","size"].forEach((k,i)=>{
+    document.getElementById("wt-"+k).textContent=(enabled[i]?pct[i]:0)+"%";
+  });
 }
 function renderTable(){
   const body=document.getElementById("tbody");
@@ -424,13 +446,23 @@ document.querySelectorAll("#modeToggle button").forEach(b=>{
     document.querySelectorAll("#modeToggle button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
     mode=b.dataset.m;
     if(mode==="smart"){
-      pct=[...DEFAULT];updateSliderUI();renderTable();
+      pct=[...DEFAULT];
+      updateSliderUI();
+      renderTable();
       document.getElementById("weightTip").classList.remove("show");
     }
   });
 });
-document.querySelectorAll("#dimChecks .check").forEach(c=>{
-  c.addEventListener("click",()=>{c.classList.toggle("on");renderTable();});
+document.querySelectorAll("#dimChecks .check").forEach((c,i)=>{
+  c.addEventListener("click",()=>{
+    if(c.classList.contains("on")&&enabled.filter(Boolean).length<=1){
+      toast("至少保留一个评估维度");
+      return;
+    }
+    c.classList.toggle("on");
+    enabled[i]=c.classList.contains("on");
+    mapFromDefault();
+  });
 });
 function applySort(){renderTable();toast("排序已应用 · TOP 3 已高亮");}
 function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
