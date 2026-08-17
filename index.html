@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的客户 · 公司列表 - 跨境魔方</title>
+<style>
+:root{
+  --brand:#2B6AF0; --brand-deep:#1B4FD8; --brand-soft:#E8F0FE;
+  --nav-bg:#1F2A44; --nav-text:#9FB0CC;
+  --bg:#F5F7FA; --panel:#fff; --border:#E3E8EF; --border-light:#F0F2F5;
+  --text:#1F2937; --text-2:#5B6573; --text-3:#98A2B3;
+  --a:#E5484D; --b:#F5A524; --c:#9AA5B1; --a-soft:#FDECEC; --b-soft:#FFF3DC; --c-soft:#F1F3F5;
+  --danger:#F45C5C;
+  --font:"PingFang SC","Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;display:flex;height:100vh;overflow:hidden}
+.sidebar{width:200px;background:var(--nav-bg);color:var(--nav-text);padding:12px 0;flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:0}
+.logo{display:flex;align-items:center;gap:8px;padding:4px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:8px}
+.logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#2B6AF0,#7A5AF8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+.logo-name{color:#fff;font-weight:600;font-size:14px}
+.nav-group{padding:10px 12px 4px;font-size:11px;color:#5E6E8C;letter-spacing:.5px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;font-size:12.5px;transition:background .15s}
+.nav-item:hover{background:rgba(255,255,255,.05);color:#D7E0F0}
+.nav-item.active{background:var(--brand);color:#fff}
+.nav-item .dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.5}
+.nav-sub{padding-left:28px}
+.nav-red{background:var(--danger);color:#fff;font-size:10px;padding:1px 5px;border-radius:8px;margin-left:auto}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:52px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;padding:0 20px;flex-shrink:0}
+.tabs-sub{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text-2)}
+.tabs-sub .tab-item{padding:16px 4px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs-sub .tab-item.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
+.search{flex:1;max-width:340px;display:flex;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 10px;gap:6px;margin-left:14px}
+.search input{border:none;outline:none;background:transparent;flex:1;font-size:12.5px;color:var(--text)}
+.top-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.engine-badge{background:var(--brand-soft);color:var(--brand-deep);font-size:11px;padding:4px 10px;border-radius:20px;font-weight:500}
+.engine-badge::before{content:"●";margin-right:4px;font-size:9px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+/* 主区 */
+.work{flex:1;display:flex;overflow:hidden}
+.left-col{width:230px;background:var(--panel);border-right:1px solid var(--border);overflow-y:auto;padding:14px 12px;flex-shrink:0}
+.left-col .sec-title{font-size:12px;font-weight:600;padding:6px 4px;display:flex;align-items:center;justify-content:space-between}
+.left-col .sec-title .op{color:var(--brand);cursor:pointer;font-size:14px;line-height:1}
+.group-block{margin-bottom:14px;border:1px solid var(--border-light);border-radius:8px;overflow:hidden}
+.group-block .head{background:#FBFCFD;padding:8px 10px;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.group-block .head .arrow{font-size:10px;color:var(--text-3)}
+.group-block .head.collapsed .arrow{transform:rotate(-90deg)}
+.group-block .body{padding:6px 10px}
+.group-row{display:flex;justify-content:space-between;padding:6px 8px;font-size:12.5px;border-radius:6px;cursor:pointer}
+.group-row:hover{background:var(--bg)}
+.group-row.active{background:var(--brand-soft);color:var(--brand-deep)}
+.group-row .count{color:var(--text-3);font-size:11px}
+.group-row.active .count{color:var(--brand-deep)}
+.group-block.collapsed .body{display:none}
+.section-heading{font-size:11px;color:var(--text-3);padding:8px 4px 4px}
+.right-col{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.sub-tabs{height:38px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:24px;font-size:13px;flex-shrink:0}
+.sub-tabs .tab{padding:11px 4px;cursor:pointer;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px}
+.sub-tabs .tab.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600}
+.sub-tabs .right{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-2)}
+.toolbar{height:54px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px;flex-shrink:0}
+.toolbar .spacer{flex:1}
+.btn{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:#fff;border-radius:8px;padding:6px 14px;font-size:12.5px;cursor:pointer;color:var(--text-2);transition:all .15s;font-family:var(--font)}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-deep)}
+.btn.smart{background:var(--brand-soft);border-color:var(--brand-soft);color:var(--brand-deep);font-weight:500}
+.btn.smart:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.smart::before{content:"✦";margin-right:2px;color:var(--brand)}
+.table-area{flex:1;overflow-y:auto;padding:18px 20px}
+.table-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:#F9FAFB;font-size:11.5px;color:var(--text-3);font-weight:500;text-align:left;padding:9px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border-light);font-size:12.5px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#FAFBFD}
+tr.top3 td:first-child{box-shadow:inset 3px 0 0 var(--brand)}
+tr.top3{background:#F2F7FF}
+.td-company{display:flex;align-items:center;gap:9px}
+.flag{width:26px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;flex-shrink:0}
+.score-cell{font-weight:700;font-size:13.5px}
+.score-num{color:var(--brand)}
+.pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500}
+.pill.a{background:var(--a-soft);color:var(--a)}
+.pill.b{background:var(--b-soft);color:#C47A00}
+.pill.c{background:var(--c-soft);color:var(--text-3)}
+.link{color:var(--brand);cursor:pointer;font-size:12px;background:none;border:none;font-family:var(--font)}
+.basis-text{font-size:11px;color:var(--text-3);max-width:240px;line-height:1.55;margin-top:4px}
+.basis-wrap{display:none;padding:6px 10px;background:#FAFBFD;border-radius:6px;margin-top:6px}
+.basis-wrap.show{display:block}
+/* 抽屉 */
+.drawer{position:absolute;top:0;right:0;bottom:0;width:340px;background:var(--panel);box-shadow:-8px 0 24px rgba(15,23,42,.12);transform:translateX(100%);transition:transform .28s;display:flex;flex-direction:column;z-index:30;border-left:1px solid var(--border)}
+.drawer.show{transform:translateX(0)}
+.drawer-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.drawer-head h2{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:7px}
+.drawer-head h2::before{content:"✦";color:var(--brand)}
+.drawer-close{color:var(--text-3);cursor:pointer;font-size:16px;background:none;border:none;padding:2px 6px}
+.drawer-body{flex:1;overflow-y:auto;padding:14px 18px}
+.sec{margin-bottom:18px}
+.sec-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sec-title .tag{font-size:10px;background:var(--brand-soft);color:var(--brand-deep);padding:1px 7px;border-radius:10px;font-weight:500}
+.check-group{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:8px;padding:7px 9px;cursor:pointer;font-size:12px;user-select:none;transition:all .15s}
+.check:hover{border-color:var(--brand)}
+.check.on{border-color:var(--brand);background:var(--brand-soft);color:var(--brand-deep)}
+.check::before{content:"";width:14px;height:14px;border:1.5px solid var(--border);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.check.on::before{background:var(--brand);border-color:var(--brand)}
+.check.on::after{content:"✓";position:relative;margin-left:-12px;color:#fff;font-size:10px;font-weight:700}
+.mode-toggle{display:flex;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:12px}
+.mode-toggle button{flex:1;border:none;background:transparent;padding:5px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--text-3);font-family:var(--font)}
+.mode-toggle button.on{background:#fff;color:var(--brand);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.slider-row{margin-bottom:12px}
+.slider-head{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-2);margin-bottom:6px}
+.slider-head b{color:var(--text)}
+input[type=range]{width:100%;accent-color:var(--brand);height:4px;cursor:pointer;background:var(--bg-light);border-radius:2px}
+.weight-tip{font-size:11px;color:#C47A00;background:var(--b-soft);border-radius:6px;padding:6px 9px;margin-top:6px;display:none;line-height:1.5}
+.weight-tip.show{display:block}
+.apply-btn{width:100%;padding:9px;font-size:13px;border-radius:8px}
+.quick-ops{display:flex;flex-direction:column;gap:8px}
+.quick-ops .btn{justify-content:center}
+.drawer-foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);line-height:1.6}
+/* AI */
+.ai-fab{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#2B6AF0,#7A5AF8);color:#fff;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 6px 20px rgba(43,106,240,.35);font-size:10px;z-index:50}
+.ai-fab .ic{font-size:18px;line-height:1}
+.ai-panel{position:fixed;right:22px;bottom:86px;width:360px;height:460px;background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 40px rgba(15,23,42,.18);display:none;flex-direction:column;z-index:60;overflow:hidden}
+.ai-panel.show{display:flex}
+.ai-head{background:linear-gradient(135deg,#2B6AF0,#7A5AF8);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:9px}
+.ai-head .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:14px}
+.ai-head h3{font-size:13.5px;font-weight:600}
+.ai-head p{font-size:10.5px;opacity:.85}
+.ai-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg{max-width:86%;padding:8px 11px;border-radius:10px;font-size:12.5px;line-height:1.6}
+.msg.user{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:2px}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--border);border-bottom-left-radius:2px}
+.msg.ai .ref{font-size:10.5px;color:var(--text-3);margin-top:5px;padding-top:5px;border-top:1px dashed var(--border)}
+.ai-quick{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 8px}
+.ai-quick button{font-size:11px;background:var(--brand-soft);color:var(--brand-deep);border:none;border-radius:14px;padding:4px 10px;cursor:pointer;font-family:var(--font)}
+.ai-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border)}
+.ai-input input{flex:1;border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;outline:none;font-family:var(--font)}
+.ai-input input:focus{border-color:var(--brand)}
+.ai-send{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:0 14px;cursor:pointer;font-size:12.5px;font-family:var(--font)}
+.ai-list{font-size:11.5px;margin-top:6px;line-height:1.7}
+.ai-list b{color:var(--brand)}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#1F2937;color:#fff;padding:9px 18px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .25s;z-index:100;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo"><div class="logo-mark">魔</div><div class="logo-name">跨境魔方</div></div>
+  <div class="nav-item"><span class="dot"></span>工作台</div>
+  <div class="nav-item"><span class="dot"></span>AI外贸员</div>
+  <div class="nav-group">线索中心</div>
+  <div class="nav-item nav-sub">海关数据</div>
+  <div class="nav-item nav-sub">地图获客</div>
+  <div class="nav-item nav-sub">领英获客</div>
+  <div class="nav-item nav-sub">Facebook获客</div>
+  <div class="nav-item nav-sub">WhatsApp获客</div>
+  <div class="nav-item nav-sub">广交会采购商</div>
+  <div class="nav-item nav-sub">全球企业库</div>
+  <div class="nav-group">转化工具</div>
+  <div class="nav-item nav-sub">邮寄宣传册</div>
+  <div class="nav-item nav-sub">WhatsApp营销中心</div>
+  <div class="nav-item nav-sub">邮件营销</div>
+  <div class="nav-item nav-sub">短信中心</div>
+  <div class="nav-group">CRM客户管理</div>
+  <div class="nav-item nav-sub active">我的客户</div>
+  <div class="nav-item nav-sub">客户设置</div>
+  <div class="nav-group">管理中心</div>
+  <div class="nav-item nav-sub">搜索记录</div>
+  <div class="nav-item nav-sub">数据看板</div>
+  <div class="nav-item"><span class="dot"></span>个人中心</div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="tabs-sub">
+      <div class="tab-item">工作台</div>
+      <div class="tab-item active">公司列表</div>
+      <div class="tab-item">联系人列表</div>
+    </div>
+    <div class="search"><span style="color:var(--text-3)">⌕</span><input placeholder="搜索公司名、国家…"></div>
+    <div class="top-right">
+      <span class="engine-badge">智能评分引擎 Beta</span>
+      <div class="avatar">陈</div>
+    </div>
+  </div>
+
+  <div class="work">
+    <!-- 左侧分组栏（完全保留原页面） -->
+    <aside class="left-col">
+      <div class="sec-title">分组</div>
+
+      <div class="group-block">
+        <div class="head" onclick="toggleGroup(this)">公司列表 <span class="arrow">▾</span></div>
+        <div class="body">
+          <div class="group-row active">★ 收藏列表 <span class="count">0</span></div>
+          <div class="group-row">全部客户 <span class="count">0</span></div>
+          <div class="group-row">系统客户 <span class="count">0</span></div>
+          <div class="group-row">自建客户 <span class="count">0</span></div>
+        </div>
+      </div>
+
+      <div class="group-block">
+        <div class="head" onclick="toggleGroup(this)">自动分组 <span class="arrow">▾</span></div>
+        <div class="body">
+          <div class="group-row">潜在客户 <span class="count">0</span></div>
+          <div class="group-row">7天内联系客户 <span class="count">0</span></div>
+          <div class="group-row">未联系客户 <span class="count">0</span></div>
+        </div>
+      </div>
+
+      <div class="group-block">
+        <div class="head" onclick="toggleGroup(this)">我的列表 <span class="arrow">▾</span></div>
+        <div class="body"></div>
+      </div>
+
+      <div class="group-block">
+        <div class="head" onclick="toggleGroup(this)">AI 补全记录 <span class="count">0</span> <span class="arrow">▾</span></div>
+        <div class="body"></div>
+      </div>
+    </aside>
+
+    <!-- 右侧主区 -->
+    <div class="right-col">
+      <div class="toolbar">
+        <button class="btn smart" onclick="toggleDrawer()">✦ 智能排序</button>
+        <button class="btn" onclick="toast('新建客户表单打开')">＋ 新建客户</button>
+        <button class="btn primary" onclick="toast('导入客户对话框打开')">导入客户</button>
+        <div class="spacer"></div>
+        <span style="font-size:11px;color:var(--text-3)">评分数据 T+1 更新 · 08-17 02:00</span>
+      </div>
+
+      <div class="table-area">
+        <div class="table-card">
+          <table>
+            <thead><tr>
+              <th>公司名称</th><th>行业</th><th>最近采购</th><th>采购频率</th><th>采购体量</th>
+              <th>海关信号</th><th>优先级</th><th>综合评分</th><th>操作</th>
+            </tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 智能排序抽屉 -->
+    <aside class="drawer" id="drawer">
+      <div class="drawer-head">
+        <h2>智能排序 · 评分引擎</h2>
+        <button class="drawer-close" onclick="toggleDrawer()">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="sec">
+          <div class="sec-title">评估维度 <span class="tag">可多选</span></div>
+          <div class="check-group" id="dimChecks">
+            <div class="check on" data-k="active"><input type="hidden">活跃程度</div>
+            <div class="check on" data-k="cycle">采购周期</div>
+            <div class="check on" data-k="recent">最近采购时间</div>
+            <div class="check on" data-k="volume">采购体量</div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="sec-title">权重调节 <span class="tag">联动</span></div>
+          <div class="mode-toggle" id="modeToggle">
+            <button class="on" data-m="smart">智能推荐</button>
+            <button data-m="custom">自定义</button>
+          </div>
+          <div class="slider-row" data-w="time">
+            <div class="slider-head"><span>时间信号</span><b id="wt-time">40%</b></div>
+            <input type="range" min="0" max="100" value="40" class="wslider">
+          </div>
+          <div class="slider-row" data-w="freq">
+            <div class="slider-head"><span>频率信号</span><b id="wt-freq">25%</b></div>
+            <input type="range" min="0" max="100" value="25" class="wslider">
+          </div>
+          <div class="slider-row" data-w="supplier">
+            <div class="slider-head"><span>供应商信号</span><b id="wt-supplier">20%</b></div>
+            <input type="range" min="0" max="100" value="20" class="wslider">
+          </div>
+          <div class="slider-row" data-w="size">
+            <div class="slider-head"><span>体量信号</span><b id="wt-size">10%</b></div>
+            <input type="range" min="0" max="100" value="10" class="wslider">
+          </div>
+          <div class="weight-tip" id="weightTip">⚠ 偏离默认权重可能导致排序失真</div>
+        </div>
+        <div class="sec">
+          <button class="btn primary apply-btn" onclick="applySort()">应用排序</button>
+        </div>
+        <div class="sec">
+          <div class="sec-title">一键操作</div>
+          <div class="quick-ops">
+            <button class="btn" onclick="toast('已将 TOP 10 客户加入优先跟进队列')">＋ 将 TOP 10 加入优先跟进队列</button>
+            <button class="btn" onclick="toast('优先级报告已导出（CSV）')">⬇ 导出优先级报告</button>
+          </div>
+        </div>
+        <div class="drawer-foot">
+          评分由后端规则引擎计算（策略模式 · T+1 异步 · 响应 &lt;200ms）。<br>
+          AI 业务员不参与评分计算，仅辅助查询与建议。
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<button class="ai-fab" onclick="toggleAI()"><span class="ic">✦</span>AI业务员</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-head"><div class="ic">✦</div><div><h3>AI 业务员</h3><p>评分由规则引擎计算 · AI 仅辅助</p></div></div>
+  <div class="ai-body" id="aiBody">
+    <div class="msg ai">您好，我是 AI 业务员。可以查 Top 客户、解释评分、生成话术。<div class="ref">示例：<b>"本月最值得跟进的5个客户"</b></div></div>
+  </div>
+  <div class="ai-quick">
+    <button onclick="aiAsk('帮我找出本月最值得跟进的5个客户')">本月Top5</button>
+    <button onclick="aiAsk('解释一下评分是怎么算的')">评分逻辑</button>
+    <button onclick="aiAsk('给Top1客户写一段跟进话术')">跟进话术</button>
+  </div>
+  <div class="ai-input">
+    <input id="aiInput" placeholder="输入问题…" onkeydown="if(event.key==='Enter')aiAsk(this.value)">
+    <button class="ai-send" onclick="aiAsk(document.getElementById('aiInput').value)">发送</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---- 客户数据 ---- */
+const CUSTOMERS=[
+ {name:"Ashley Furniture Trading", flag:"US", country:"美国", industry:"家具", recent:"2 个月前", cycle:"每季度稳定", size:"大宗柜量", supplier:"供应商变更", scores:{time:5,freq:5,supplier:4,size:5,product:5}, adjust:+1},
+ {name:"Ikea Supply Ag Services", flag:"SE", country:"瑞典", industry:"家居", recent:"1 个月前", cycle:"每月稳定", size:"大宗柜量", supplier:"稳定", scores:{time:5,freq:5,supplier:3,size:5,product:4}, adjust:0},
+ {name:"Compal Electronics", flag:"TW", country:"中国台湾", industry:"电子", recent:"3 个月前", cycle:"季度采购", size:"中量", supplier:"供应商变更", scores:{time:4,freq:4,supplier:4,size:3,product:5}, adjust:+2},
+ {name:"Amazon Logistics Inc.", flag:"US", country:"美国", industry:"物流", recent:"1 周前", cycle:"高频采购", size:"大宗柜量", supplier:"供应商变更", scores:{time:5,freq:5,supplier:5,size:5,product:3}, adjust:+1},
+ {name:"Williams Sonoma Inc.", flag:"US", country:"美国", industry:"家居", recent:"6 个月前", cycle:"半年一次", size:"中量", supplier:"稳定", scores:{time:2,freq:2,supplier:3,size:3,product:4}, adjust:0},
+ {name:"Beeline Import GmbH", flag:"DE", country:"德国", industry:"建材", recent:"4 个月前", cycle:"季度采购", size:"小量", supplier:"稳定", scores:{time:3,freq:4,supplier:2,size:2,product:4}, adjust:-1},
+ {name:"Nordic Home AB", flag:"SE", country:"瑞典", industry:"家居", recent:"9 个月前", cycle:"年度采购", size:"小量", supplier:"稳定", scores:{time:1,freq:1,supplier:2,size:2,product:3}, adjust:0},
+ {name:"Mega Traders Ltd", flag:"GB", country:"英国", industry:"百货", recent:"7 个月前", cycle:"无规律", size:"中量", supplier:"稳定", scores:{time:2,freq:2,supplier:3,size:3,product:2}, adjust:-1},
+ {name:"Andes Import S.A.", flag:"BR", country:"巴西", industry:"机械", recent:"1 个月前", cycle:"每月稳定", size:"中量", supplier:"供应商变更", scores:{time:5,freq:5,supplier:4,size:3,product:4}, adjust:+1},
+ {name:"Kansai Parts Corp", flag:"JP", country:"日本", industry:"汽配", recent:"5 个月前", cycle:"季度采购", size:"小量", supplier:"稳定", scores:{time:3,freq:4,supplier:2,size:2,product:5}, adjust:0},
+];
+const FLAG={US:"#3C5DA8",SE:"#2E6EB5",TW:"#8B3A3A",DE:"#C97B2D",GB:"#5A6BB5",BR:"#2F8F4E",JP:"#C23B3B"};
+const FLAG_TEXT={US:"US",SE:"SE",TW:"TW",DE:"DE",GB:"UK",BR:"BR",JP:"JP"};
+
+/* ---- 评分引擎（规则） ---- */
+function calcScore(c,w){
+  const base = (c.scores.time*w.time + c.scores.freq*w.freq + c.scores.supplier*w.supplier + c.scores.size*w.size) * 6;
+  const total = base + c.scores.product*0.3 + c.adjust;
+  return Math.round(total*10)/10;
+}
+function level(s){return s>=24?{k:"a",t:"A 高潜"}:s>=18?{k:"b",t:"B 中潜"}:{k:"c",t:"C 观察"}}
+function basisText(c){
+  const t=c.scores.time===5?"近 1-2 个月有进口（5）":c.scores.time>=3?"近期活跃（"+c.scores.time+"）":"活跃度低（"+c.scores.time+"）";
+  const f=c.scores.freq===5?"采购稳定（5）":"采购频次一般（"+c.scores.freq+"）";
+  const s=c.scores.supplier===4?"供应商近期变更（4）":"供应商稳定（"+c.scores.supplier+"）";
+  const a=c.adjust>0?"，决策链支持度（+"+c.adjust+"）":c.adjust<0?"，决策链信号弱（"+c.adjust+"）":"";
+  return "时间："+t+" · 频率："+f+" · "+s+" · 体量"+c.scores.size+" · 产品匹配"+c.scores.product+a;
+}
+
+/* ---- 联动权重：拖一项，其他按比例自动调，总和恒等于 100 ---- */
+const DEFAULT=[40,25,20,10];
+let pct=[...DEFAULT];
+let mode="smart";
+
+function rebalance(idx,newVal){
+  newVal=Math.max(0,Math.min(100,newVal));
+  const others=[];for(let i=0;i<4;i++)if(i!==idx)others.push({i,v:pct[i]});
+  const sumOthers=others.reduce((a,b)=>a+b.v,0);
+  const remain=100-newVal;
+  let next=[...pct];
+  next[idx]=newVal;
+  if(sumOthers===0){
+    const each=Math/3;
+    others.forEach(o=>next[o.i]=Math.round(each));
+  } else {
+    others.forEach(o=>{next[o.i]=Math.round(o.v/sumOthers*remain);});
+  }
+  // 修正四舍五入误差：把差额补给 idx 自身
+  const diff=100-next.reduce((a,b)=>a+b,0);
+  next[idx]+=diff;
+  next[idx]=Math.max(0,Math.min(100,next[idx]));
+  pct=next;
+  updateSliderUI();
+  if(mode==="custom"){
+    const dev=pct.some((v,i)=>Math.abs(v-DEFAULT[i])>3);
+    document.getElementById("weightTip").classList.toggle("show",dev);
+  }
+  renderTable();
+}
+function updateSliderUI(){
+  document.querySelectorAll(".wslider").forEach((s,i)=>{s.value=pct[i]});
+  ["time","freq","supplier","size"].forEach((k,i)=>{document.getElementById("wt-"+k).textContent=pct[i]+"%";});
+}
+function renderTable(){
+  const body=document.getElementById("tbody");
+  const w={time:pct[0]/100,freq:pct[1]/100,supplier:pct[2]/100,size:pct[3]/100};
+  const rows=CUSTOMERS.map(c=>{const s=calcScore(c,w);return {...c,s,lv:level(s)};}).sort((a,b)=>b.s-a.s);
+  body.innerHTML=rows.map((c,i)=>{
+    const top=i<3?' class="top3"':"";
+    const id=c.name.replace(/\W/g,"");
+    return `<tr${top}>
+          <td><div class="td-company"><span class="flag" style="background:${FLAG[c.flag]||'#5A6BB5'}">${FLAG_TEXT[c.flag]||c.flag}</span><div><div style="font-weight:600">${c.name}</div><div style="font-size:11px;color:var(--text-3)">${c.country}</div></div></div></td>
+          <td>${c.industry}</td><td>${c.recent}</td><td>${c.cycle}</td><td>${c.size}</td>
+          <td>${c.supplier}<div class="basis-wrap" id="b-${id}">${basisText(c)}</div></td>
+          <td><span class="pill ${c.lv.k}">${c.lv.t}</span></td>
+          <td class="score-cell"><span class="score-num">${c.s.toFixed(1)}</span><span style="font-size:11px;color:var(--text-3)">/30</span></td>
+          <td><button class="link" onclick="document.getElementById('b-${id}').classList.toggle('show')">评分依据</button> <button class="link" onclick="toast('已发起跟进：'+'${c.name}')">跟进</button></td>
+        </tr>`;
+  }).join("");
+}
+
+/* ---- 交互 ---- */
+function toggleDrawer(){document.getElementById("drawer").classList.toggle("show")}
+function toggleGroup(h){
+  const b=h.parentElement;b.classList.toggle("collapsed");
+}
+document.querySelectorAll(".wslider").forEach((s,i)=>{
+  s.addEventListener("input",e=>{rebalance(i,+e.target.value)});
+});
+document.querySelectorAll("#modeToggle button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("#modeToggle button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+    mode=b.dataset.m;
+    if(mode==="smart"){
+      pct=[...DEFAULT];updateSliderUI();renderTable();
+      document.getElementById("weightTip").classList.remove("show");
+    }
+  });
+});
+document.querySelectorAll("#dimChecks .check").forEach(c=>{
+  c.addEventListener("click",()=>{c.classList.toggle("on");renderTable();});
+});
+function applySort(){renderTable();toast("排序已应用 · TOP 3 已高亮");}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+
+/* ---- AI ---- */
+function toggleAI(){document.getElementById("aiPanel").classList.toggle("show")}
+function aiMsg(html){const b=document.getElementById("aiBody");b.insertAdjacentHTML("beforeend",html);b.scrollTop=b.scrollHeight}
+function aiAsk(q){
+  q=(q||"").trim();if(!q)return;
+  aiMsg(`<div class="msg user">${q.replace(/</g,"&lt;")}</div>`);
+  const w={time:pct[0]/100,freq:pct[1]/100,supplier:pct[2]/100,size:pct[3]/100};
+  const sc=CUSTOMERS.map(c=>{return {...c,s:calcScore(c,w),lv:level(calcScore(c,w))};}).sort((a,b)=>b.s-a.s);
+  if(q.includes("5个客户")||q.includes("Top5")||q.includes("最值得跟进")){
+    const t5=sc.slice(0,5);
+    aiMsg(`<div class="msg ai">已调用评分引擎（${pct.join('/')}）返回 Top5：<div class="ai-list">${t5.map((c,i)=>`${i+1}. <b>${c.name}</b>（${c.s.toFixed(1)} · ${c.lv.t}）</div>`).join("")}<div class="ref">评分由后端规则引擎计算，AI 仅翻译查询</div></div>`);
+  } else if(q.includes("怎么算")||q.includes("逻辑")){
+    aiMsg(`<div class="msg ai">总分 = 时间×${pct[0]}% + 频率×${pct[1]}% + 供应商×${pct[2]}% + 体量×${pct[3]}% + 产品匹配×0.3 + 决策链调节 ±1，映射 30 分制 ≥24/≥18/&lt;18 = A/B/C。<div class="ref">规则引擎 · T+1 异步</div></div>`);
+  } else if(q.includes("话术")||q.includes("开发信")){
+    const c=sc[0];
+    aiMsg(`<div class="msg ai">基于 <b>${c.name}</b>（${c.s.toFixed(1)} 分 · ${c.lv.t}）：<br><br>"Hello ${c.name.split(" ")[0]}, noticed your stable ${c.industry} procurement. Can we share the catalog and best terms within 24h?"<br><br>建议 WhatsApp 触达（首响 &lt;1h）。<div class="ref">AI 生成，客户数据来自引擎</div></div>`);
+  } else {
+    aiMsg(`<div class="msg ai">可以帮：① Top Top5 客户；② 解释评分；③ 生成话术。请重新提问。<div class="ref">AI 仅辅助，评分由引擎</div></div>`);
+  }
+  document.getElementById("aiInput").value="";
+}
+
+updateSliderUI();renderTable();
+</script>
+</body>
+</html>
